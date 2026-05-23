@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BScNotes — Premium Study Platform</title>
+  <meta name="description" content="Free premium BSc notes for all 6 semesters. Physics, Chemistry, Botany, Zoology, Mathematics. Light modern design." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="home">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">📚</div>
+        BScNotes
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="semester.html?sem=1">Semesters</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+      <div class="search-wrap">
+        <div class="nav-search">
+          <span class="nav-search-icon">🔍</span>
+          <input type="text" id="nav-search-input" placeholder="Search notes…" autocomplete="off" />
+        </div>
+        <div id="search-results"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">✦ Free Premium Notes</div>
+    <h1>Study Smarter with<br/><span>BSc Notes Platform</span></h1>
+    <p>All 6 semesters, 5 subjects, 5 units each — beautifully organized notes in English & Hindi, available instantly.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">6</div><div class="label">Semesters</div></div>
+      <div class="hero-stat"><div class="num">5</div><div class="label">Subjects</div></div>
+      <div class="hero-stat"><div class="num">150</div><div class="label">Units</div></div>
+      <div class="hero-stat"><div class="num">2</div><div class="label">Languages</div></div>
+    </div>
+  </section>
+
+  <!-- Semesters -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-label">Browse</div>
+      <div class="section-title">Choose Your Semester</div>
+    </div>
+    <div class="sem-grid" id="sem-grid"></div>
+  </section>
+
+  <!-- Subjects Preview -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-label">Subjects</div>
+      <div class="section-title">Covered in All Semesters</div>
+    </div>
+    <div class="subject-grid" id="featured-subjects">
+      <div class="subject-card glass-card">
+        <div class="subject-icon bg-physics">⚡</div>
+        <div class="subject-name">Physics</div>
+        <div class="subject-meta">5 Units · 6 Semesters</div>
+      </div>
+      <div class="subject-card glass-card">
+        <div class="subject-icon bg-chemistry">🧪</div>
+        <div class="subject-name">Chemistry</div>
+        <div class="subject-meta">5 Units · 6 Semesters</div>
+      </div>
+      <div class="subject-card glass-card">
+        <div class="subject-icon bg-botany">🌿</div>
+        <div class="subject-name">Botany</div>
+        <div class="subject-meta">5 Units · 6 Semesters</div>
+      </div>
+      <div class="subject-card glass-card">
+        <div class="subject-icon bg-zoology">🦋</div>
+        <div class="subject-name">Zoology</div>
+        <div class="subject-meta">5 Units · 6 Semesters</div>
+      </div>
+      <div class="subject-card glass-card">
+        <div class="subject-icon bg-maths">📐</div>
+        <div class="subject-name">Mathematics</div>
+        <div class="subject-meta">5 Units · 6 Semesters</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-label">Features</div>
+      <div class="section-title">Why Students Love BScNotes</div>
+    </div>
+    <div class="subject-grid">
+      <div class="glass-card" style="padding:20px 18px">
+        <div style="font-size:22px;margin-bottom:10px">🌐</div>
+        <div style="font-family:var(--font-main);font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:5px">Bilingual Notes</div>
+        <div style="font-size:12.5px;color:var(--gray-500)">Available in English & Hindi for every unit.</div>
+      </div>
+      <div class="glass-card" style="padding:20px 18px">
+        <div style="font-size:22px;margin-bottom:10px">📱</div>
+        <div style="font-family:var(--font-main);font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:5px">Mobile First</div>
+        <div style="font-size:12.5px;color:var(--gray-500)">Perfectly readable on any phone or tablet.</div>
+      </div>
+      <div class="glass-card" style="padding:20px 18px">
+        <div style="font-size:22px;margin-bottom:10px">⚡</div>
+        <div style="font-family:var(--font-main);font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:5px">Instant Unlock</div>
+        <div style="font-size:12.5px;color:var(--gray-500)">No OTP or password. Just your name & number.</div>
+      </div>
+      <div class="glass-card" style="padding:20px 18px">
+        <div style="font-size:22px;margin-bottom:10px">📑</div>
+        <div style="font-family:var(--font-main);font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:5px">Rich Content</div>
+        <div style="font-size:12.5px;color:var(--gray-500)">Tables, diagrams, code, and formulas supported.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2024 BScNotes · Built with ❤️ for students · <a href="admin.html">Admin Panel</a></p>
+  </footer>
+
+  <div class="toast"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
