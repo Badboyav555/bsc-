@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semester | BScNotes</title>
+  <meta name="description" content="Choose a subject for this semester." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="semester">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">📚</div>
+        BScNotes
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+      <div class="search-wrap">
+        <div class="nav-search">
+          <span class="nav-search-icon">🔍</span>
+          <input type="text" id="nav-search-input" placeholder="Search notes…" autocomplete="off" />
+        </div>
+        <div id="search-results"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <div class="page-title" id="page-title">Semester</div>
+    <div class="page-subtitle">Choose a subject to view units</div>
+  </div>
+
+  <!-- Subjects -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-label">Subjects</div>
+      <div class="section-title">Select a Subject</div>
+    </div>
+    <div class="subject-grid" id="subject-grid"></div>
+  </section>
+
+  <!-- All Semesters Nav -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-label">Navigate</div>
+      <div class="section-title">Other Semesters</div>
+    </div>
+    <div class="sem-grid" id="sem-grid"></div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2024 BScNotes · <a href="index.html">Home</a> · <a href="admin.html">Admin</a></p>
+  </footer>
+
+  <div class="toast"></div>
+  <script src="js/app.js"></script>
+  <script>
+    // Set page title from param
+    const sem = parseInt(new URLSearchParams(location.search).get('sem')) || 1;
+    const labels = ['I','II','III','IV','V','VI'];
+    document.title = `Semester ${labels[sem-1]} | BScNotes`;
+    document.querySelector('.page-title').textContent = `Semester ${labels[sem-1]}`;
+  </script>
+</body>
+</html>
