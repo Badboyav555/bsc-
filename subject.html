@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subject | BScNotes</title>
+  <meta name="description" content="Choose a unit to read notes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="subject">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">📚</div>
+        BScNotes
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+      <div class="search-wrap">
+        <div class="nav-search">
+          <span class="nav-search-icon">🔍</span>
+          <input type="text" id="nav-search-input" placeholder="Search notes…" autocomplete="off" />
+        </div>
+        <div id="search-results"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <div class="page-title" id="page-title">Subject</div>
+    <div class="page-subtitle" id="page-subtitle">Select a unit to read notes</div>
+  </div>
+
+  <!-- Units -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-label">Units</div>
+      <div class="section-title">Choose a Unit</div>
+    </div>
+    <div id="unit-list"></div>
+  </section>
+
+  <!-- Other Subjects -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-label">More</div>
+      <div class="section-title">Other Subjects</div>
+    </div>
+    <div class="subject-grid" id="other-subjects"></div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2024 BScNotes · <a href="index.html">Home</a> · <a href="admin.html">Admin</a></p>
+  </footer>
+
+  <div class="toast"></div>
+  <script src="js/app.js"></script>
+  <script>
+    // Render other subjects after main app init
+    document.addEventListener('DOMContentLoaded', () => {
+      const sem = parseInt(new URLSearchParams(location.search).get('sem')) || 1;
+      const subject = new URLSearchParams(location.search).get('subject') || 'physics';
+      const subjects = ['physics','chemistry','botany','zoology','maths'];
+      const labels = { physics:'Physics', chemistry:'Chemistry', botany:'Botany', zoology:'Zoology', maths:'Mathematics' };
+      const emojis = { physics:'⚡', chemistry:'🧪', botany:'🌿', zoology:'🦋', maths:'📐' };
+      const bgs = { physics:'bg-physics', chemistry:'bg-chemistry', botany:'bg-botany', zoology:'bg-zoology', maths:'bg-maths' };
+      const container = document.getElementById('other-subjects');
+      if (!container) return;
+      subjects.filter(s => s !== subject).forEach(s => {
+        const a = document.createElement('a');
+        a.href = `subject.html?sem=${sem}&subject=${s}`;
+        a.className = 'subject-card glass-card';
+        a.innerHTML = `
+          <div class="subject-icon ${bgs[s]}">${emojis[s]}</div>
+          <div class="subject-name">${labels[s]}</div>
+          <div class="subject-meta">5 Units &bull; Sem ${sem}</div>
+          <div class="subject-arrow">›</div>
+        `;
+        container.appendChild(a);
+      });
+    });
+  </script>
+</body>
+</html>
