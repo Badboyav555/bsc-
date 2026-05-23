@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | BScNotes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body data-page="admin">
+
+  <!-- ---- Login Screen ---- -->
+  <div id="admin-login" style="display:none">
+    <div class="admin-login-wrap">
+      <div class="admin-login-card">
+        <div class="login-icon">🔐</div>
+        <div class="login-title">Admin Panel</div>
+        <div class="login-sub">Enter your password to access the dashboard</div>
+        <div class="login-form">
+          <div class="form-group">
+            <label>Password</label>
+            <input class="form-input" type="password" id="admin-pass" placeholder="Enter password" />
+          </div>
+          <div class="login-error" id="login-error"></div>
+          <button class="btn btn-primary" id="login-btn" style="width:100%;justify-content:center">Sign In →</button>
+        </div>
+        <p style="font-size:11px;color:var(--gray-400);margin-top:14px;text-align:center">Default: admin@bsc2024</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---- Admin App ---- -->
+  <div id="admin-app" style="display:none">
+    <div class="sidebar-overlay"></div>
+
+    <div class="admin-layout">
+
+      <!-- Sidebar -->
+      <aside class="admin-sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <div class="sidebar-logo-icon">📚</div>
+            BScNotes
+            <span class="sidebar-badge">Admin</span>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <div class="sidebar-section">
+            <div class="sidebar-section-label">Main</div>
+            <div class="sidebar-item active" data-tab="dashboard">
+              <span class="sidebar-item-icon">📊</span> Dashboard
+            </div>
+            <div class="sidebar-item" data-tab="leads">
+              <span class="sidebar-item-icon">👥</span> Leads
+            </div>
+          </div>
+          <div class="sidebar-section">
+            <div class="sidebar-section-label">Content</div>
+            <div class="sidebar-item" data-tab="editor">
+              <span class="sidebar-item-icon">✏️</span> Notes Editor
+            </div>
+            <div class="sidebar-item" data-tab="links">
+              <span class="sidebar-item-icon">🔗</span> Link Generator
+            </div>
+          </div>
+          <div class="sidebar-section">
+            <div class="sidebar-section-label">Account</div>
+            <div class="sidebar-item" id="logout-btn">
+              <span class="sidebar-item-icon">🚪</span> Logout
+            </div>
+            <a href="index.html" class="sidebar-item" style="display:flex">
+              <span class="sidebar-item-icon">🏠</span> View Site
+            </a>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="admin-main">
+        <!-- Top Bar -->
+        <div class="admin-topbar">
+          <div style="display:flex;align-items:center;gap:10px">
+            <button id="sidebar-toggle" class="btn btn-ghost btn-sm" style="display:none;padding:6px 9px">☰</button>
+            <div class="topbar-title">Dashboard</div>
+          </div>
+          <div class="topbar-actions">
+            <button class="btn btn-ghost btn-sm" id="refresh-leads">↺ Refresh</button>
+            <button class="btn btn-primary btn-sm" id="export-csv">⬇ Export CSV</button>
+          </div>
+        </div>
+
+        <!-- ===== Dashboard Panel ===== -->
+        <div class="admin-content active" id="panel-dashboard">
+          <!-- Stats -->
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-label">Total Leads</div>
+              <div class="stat-value" id="stat-total">—</div>
+              <div class="stat-sub">All time</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Today</div>
+              <div class="stat-value" id="stat-today">—</div>
+              <div class="stat-sub">New leads today</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Semesters</div>
+              <div class="stat-value" id="stat-sems">—</div>
+              <div class="stat-sub">Active</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Subjects</div>
+              <div class="stat-value" id="stat-subjects">—</div>
+              <div class="stat-sub">Unlocked</div>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="admin-panel">
+            <div class="panel-header">
+              <div class="panel-title">Quick Actions</div>
+            </div>
+            <div class="panel-body">
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <a href="index.html" target="_blank" class="btn btn-ghost btn-sm">🏠 View Home</a>
+                <a href="notes.html?sem=1&subject=physics&note=unit1" target="_blank" class="btn btn-ghost btn-sm">📖 Preview Notes</a>
+                <button class="btn btn-ghost btn-sm" id="export-csv2">⬇ Export Leads</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Supabase Setup Guide -->
+          <div class="admin-panel">
+            <div class="panel-header">
+              <div class="panel-title">⚡ Setup Guide — Supabase Integration</div>
+            </div>
+            <div class="panel-body">
+              <div style="font-size:13.5px;color:var(--gray-700);line-height:1.8">
+                <p style="margin-bottom:10px"><strong>Step 1:</strong> Create a free project at <a href="https://supabase.com" target="_blank" style="color:var(--primary)">supabase.com</a></p>
+                <p style="margin-bottom:10px"><strong>Step 2:</strong> In Supabase, run this SQL to create the leads table:</p>
+                <pre style="background:#1e2333;color:#e2e8f0;padding:14px;border-radius:10px;font-size:12.5px;overflow-x:auto;margin-bottom:12px"><code>create table leads (
+  id uuid default gen_random_uuid() primary key,
+  name text,
+  mobile text,
+  semester integer,
+  subject text,
+  note_title text,
+  created_at timestamptz default now()
+);
+
+-- Allow public inserts
+create policy "Allow public inserts" on leads
+  for insert to anon with check (true);
+
+-- Allow reads for authenticated
+create policy "Allow reads" on leads
+  for select to authenticated using (true);
+
+alter table leads enable row level security;</code></pre>
+                <p style="margin-bottom:8px"><strong>Step 3:</strong> Copy your Project URL and anon key from <em>Settings → API</em></p>
+                <p style="margin-bottom:8px"><strong>Step 4:</strong> Open <code style="background:var(--gray-100);padding:2px 6px;border-radius:4px">js/notes.js</code> and <code style="background:var(--gray-100);padding:2px 6px;border-radius:4px">js/admin.js</code> and replace:</p>
+                <pre style="background:#1e2333;color:#e2e8f0;padding:12px;border-radius:10px;font-size:12.5px;overflow-x:auto"><code>const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== Leads Panel ===== -->
+        <div class="admin-content" id="panel-leads">
+          <div class="admin-panel">
+            <div class="panel-header">
+              <div class="panel-title">👥 All Leads</div>
+              <button class="btn btn-primary btn-sm" id="export-csv3">⬇ Export CSV</button>
+            </div>
+            <div class="panel-body">
+              <div class="leads-controls">
+                <input type="text" class="search-input" id="lead-search" placeholder="Search by name, mobile, subject…" />
+                <button class="btn btn-ghost btn-sm" id="refresh-leads2">↺ Refresh</button>
+              </div>
+              <div class="table-wrap">
+                <table class="leads-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Mobile</th>
+                      <th>Semester</th>
+                      <th>Subject</th>
+                      <th>Note</th>
+                      <th>Date</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="leads-tbody">
+                    <tr><td colspan="8" class="table-loading">Loading…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== Editor Panel ===== -->
+        <div class="admin-content" id="panel-editor">
+          <div class="admin-panel">
+            <div class="panel-header">
+              <div class="panel-title">✏️ Notes Editor & Generator</div>
+            </div>
+            <div class="panel-body">
+              <!-- Generator Controls -->
+              <div class="gen-form">
+                <div class="form-group">
+                  <label>Semester</label>
+                  <select class="form-select sem-select" id="gen-sem"></select>
+                </div>
+                <div class="form-group">
+                  <label>Subject</label>
+                  <select class="form-select sub-select" id="gen-sub"></select>
+                </div>
+                <div class="form-group">
+                  <label>Unit</label>
+                  <select class="form-select unit-select" id="gen-unit"></select>
+                </div>
+                <div class="form-group">
+                  <label>Language</label>
+                  <select class="form-select" id="gen-lang">
+                    <option value="en">English (en)</option>
+                    <option value="hi">Hindi (hi)</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+                <button class="btn btn-ghost btn-sm" id="insert-template">📄 Load Template</button>
+                <button class="btn btn-primary btn-sm" id="save-md">⬇ Download .md File</button>
+              </div>
+              <!-- Editor + Preview -->
+              <div class="editor-wrap">
+                <div class="editor-pane">
+                  <div class="editor-label">Markdown Editor</div>
+                  <textarea class="md-editor" id="md-editor" placeholder="# Unit Title&#10;&#10;Write your notes in Markdown…&#10;&#10;## Section&#10;&#10;Content here…"></textarea>
+                </div>
+                <div class="editor-pane">
+                  <div class="editor-label">Live Preview</div>
+                  <div class="md-preview" id="md-preview"></div>
+                </div>
+              </div>
+              <div style="margin-top:12px;padding:12px;background:var(--gray-50);border-radius:9px;font-size:12.5px;color:var(--gray-500)">
+                💡 <strong>How to add notes:</strong> Write or paste markdown above → Click "Download .md File" → Place the file at the correct path, e.g., <code style="font-size:11.5px;background:var(--gray-100);padding:1px 5px;border-radius:4px">notes/sem1/physics/unit1-en.md</code>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== Links Panel ===== -->
+        <div class="admin-content" id="panel-links">
+          <div class="admin-panel">
+            <div class="panel-header">
+              <div class="panel-title">🔗 Link Generator</div>
+            </div>
+            <div class="panel-body">
+              <div class="gen-form" style="margin-bottom:14px">
+                <div class="form-group">
+                  <label>Semester</label>
+                  <select class="form-select sem-select" id="link-sem"></select>
+                </div>
+                <div class="form-group">
+                  <label>Subject</label>
+                  <select class="form-select sub-select" id="link-sub" data-all="true"></select>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-sm" id="gen-links-btn">Generate Links →</button>
+              <div id="links-output" style="margin-top:16px"></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end admin-main -->
+    </div><!-- end admin-layout -->
+  </div><!-- end admin-app -->
+
+  <div class="toast"></div>
+
+  <!-- Marked.js for preview -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/admin.js"></script>
+
+  <script>
+    // Wire up extra export/refresh buttons
+    document.getElementById('export-csv2').addEventListener('click', exportCSV);
+    document.getElementById('export-csv3').addEventListener('click', exportCSV);
+    document.getElementById('refresh-leads2').addEventListener('click', loadLeads);
+
+    // Mobile sidebar toggle visibility
+    function checkMobileSidebar() {
+      const btn = document.getElementById('sidebar-toggle');
+      if (btn) btn.style.display = window.innerWidth <= 900 ? 'flex' : 'none';
+    }
+    checkMobileSidebar();
+    window.addEventListener('resize', checkMobileSidebar);
+  </script>
+</body>
+</html>
