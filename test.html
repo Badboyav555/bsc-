@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>BScNotes — Path Debug Test</title>
+  <style>
+    body { font-family: sans-serif; padding: 24px; background: #f5f7ff; }
+    h2 { color: #3b82f6; }
+    .box { background: white; border-radius: 12px; padding: 18px 22px; margin: 14px 0;
+           box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-left: 4px solid #3b82f6; }
+    .ok   { border-color: #10b981; }
+    .fail { border-color: #ef4444; }
+    .warn { border-color: #f59e0b; }
+    code  { background: #f0f2f7; padding: 2px 7px; border-radius: 5px; font-size: 13px; }
+    pre   { background: #1e2333; color: #e2e8f0; padding: 14px; border-radius: 8px;
+            font-size: 12.5px; overflow-x: auto; white-space: pre-wrap; }
+    .status { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+    button  { background: #3b82f6; color: white; border: none; padding: 10px 22px;
+              border-radius: 8px; font-size: 14px; cursor: pointer; margin: 4px; }
+    button:hover { background: #2563eb; }
+    #log { max-height: 340px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+
+<h2>🔍 BScNotes — Path Debug Test</h2>
+<p>Yeh page check karega ki notes fetch ho pa rahi hain ya nahi.</p>
+
+<div class="box" id="box-url">
+  <div class="status">📍 Current Page URL</div>
+  <code id="show-url"></code>
+</div>
+
+<div class="box" id="box-base">
+  <div class="status">📁 Detected Base Path</div>
+  <code id="show-base"></code>
+</div>
+
+<div class="box" id="box-fetch">
+  <div class="status">🔄 Fetch Test Results</div>
+  <pre id="log">Running tests…</pre>
+</div>
+
+<div style="margin-top:12px">
+  <button onclick="runTests()">↺ Run Tests Again</button>
+  <button onclick="testCustom()">Test Custom Path</button>
+</div>
+
+<script>
+const log = document.getElementById('log');
+
+function addLog(msg, type='info') {
+  const icons = { ok:'✅', fail:'❌', warn:'⚠️', info:'ℹ️' };
+  log.textContent += (icons[type]||'') + ' ' + msg + '\n';
+  log.scrollTop = log.scrollHeight;
+}
+
+// Show current URL
+document.getElementById('show-url').textContent = window.location.href;
+
+// Detect base path (same logic as notes.js)
+function getBasePath() {
+  const scripts = document.querySelectorAll('script[src]');
+  for (const s of scripts) {
+    if (s.src && s.src.includes('js/notes.js')) {
+      return s.src.replace('js/notes.js', '');
+    }
+  }
+  // Fallback for this test page (not loading notes.js)
+  const loc = window.location.href;
+  return loc.substring(0, loc.lastIndexOf('/') + 1);
+}
+
+const base = getBasePath();
+document.getElementById('show-base').textContent = base;
+
+// Files to test
+const testFiles = [
+  'notes/sem1/physics/unit1-en.md',
+  'notes/sem1/chemistry/unit1-en.md',
+  'notes/sem1/botany/unit1-en.md',
+  'notes/sem1/zoology/unit1-en.md',
+  'notes/sem1/maths/unit1-en.md',
+];
+
+async function fetchTest(url) {
+  try {
+    const res = await fetch(url, { cache: 'no-cache' });
+    if (!res.ok) return { ok: false, status: res.status };
+    const text = await res.text();
+    return { ok: true, status: res.status, chars: text.length };
+  } catch(e) {
+    return { ok: false, error: e.message };
+  }
+}
+
+async function runTests() {
+  log.textContent = '';
+  addLog('Base path: ' + base);
+  addLog('Testing ' + testFiles.length + ' files…\n');
+
+  let passed = 0;
+  for (const f of testFiles) {
+    const url = base + f;
+    addLog('Trying: ' + url);
+    const r = await fetchTest(url);
+    if (r.ok) {
+      addLog(`PASS — ${f} (${r.chars} chars)`, 'ok');
+      passed++;
+    } else {
+      addLog(`FAIL — ${f} → HTTP ${r.status || r.error}`, 'fail');
+    }
+    addLog('');
+  }
+
+  addLog('---');
+  if (passed === testFiles.length) {
+    addLog('ALL TESTS PASSED! Notes should load correctly.', 'ok');
+    document.getElementById('box-fetch').className = 'box ok';
+  } else if (passed === 0) {
+    addLog('ALL TESTS FAILED. Files not found on server.', 'fail');
+    addLog('Fix: Make sure notes/ folder is uploaded to GitHub root.', 'warn');
+    document.getElementById('box-fetch').className = 'box fail';
+  } else {
+    addLog(`${passed}/${testFiles.length} passed. Some files missing.`, 'warn');
+    document.getElementById('box-fetch').className = 'box warn';
+  }
+}
+
+async function testCustom() {
+  const path = prompt('Enter file path to test:\nExample: notes/sem2/physics/unit1-en.md');
+  if (!path) return;
+  const url = base + path.trim();
+  log.textContent = '';
+  addLog('Testing: ' + url);
+  const r = await fetchTest(url);
+  if (r.ok) addLog(`PASS (${r.chars} chars)`, 'ok');
+  else addLog(`FAIL → HTTP ${r.status || r.error}`, 'fail');
+}
+
+// Auto-run on load
+runTests();
+</script>
+</body>
+</html>
