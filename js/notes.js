@@ -4,8 +4,8 @@
    ============================================= */
 
 // ── Supabase (optional) ───────────────────────
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'https://yiucvqmtumyslcblowop.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Oc2bWjEsfLDWCLU7dVuFAQ_Ofj5nrNq';
 let _sb = null;
 function initSupabase() {
   try {
