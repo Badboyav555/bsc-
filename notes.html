@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes | BScNotes</title>
+  <meta name="description" content="Read BSc notes - premium study platform." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/notes.css" />
+</head>
+<body data-page="notes">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">📚</div>
+        BScNotes
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+      </ul>
+      <div class="search-wrap">
+        <div class="nav-search">
+          <span class="nav-search-icon">🔍</span>
+          <input type="text" id="nav-search-input" placeholder="Search notes…" autocomplete="off" />
+        </div>
+        <div id="search-results"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumb -->
+  <div style="max-width:1200px;margin:0 auto;padding:16px 20px 0">
+    <div class="breadcrumb" id="breadcrumb"></div>
+  </div>
+
+  <!-- Notes Layout -->
+  <div class="notes-layout">
+
+    <!-- Sidebar TOC -->
+    <aside class="notes-toc">
+      <div class="toc-title">📋 On This Page</div>
+      <ul class="toc-list" id="toc-list"></ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="notes-content-wrap">
+
+      <!-- Notes Header Card -->
+      <div class="notes-header-card">
+        <div class="notes-meta" id="notes-meta"></div>
+        <div class="notes-title" id="notes-title">Loading…</div>
+        <div class="notes-actions">
+          <div class="lang-toggle">
+            <button class="lang-btn active" id="lang-en">🇬🇧 English</button>
+            <button class="lang-btn" id="lang-hi">🇮🇳 हिंदी</button>
+          </div>
+          <a href="javascript:history.back()" class="btn btn-ghost btn-sm">← Back</a>
+        </div>
+      </div>
+
+      <!-- Notes Body -->
+      <div class="notes-body glass-card" id="notes-body">
+        <div class="notes-loading">
+          <div class="spinner"></div>
+          <div class="loading-text">Loading notes…</div>
+        </div>
+      </div>
+
+      <!-- Prev / Next unit nav -->
+      <div id="unit-nav" style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"></div>
+
+    </main>
+  </div>
+
+  <!-- Image Zoom Modal -->
+  <div class="img-modal" id="img-modal">
+    <button class="img-modal-close" id="img-modal-close">✕</button>
+    <img src="" alt="Zoomed" />
+  </div>
+
+  <footer class="footer">
+    <p>© 2024 BScNotes · <a href="index.html">Home</a></p>
+  </footer>
+
+  <div class="toast"></div>
+
+  <!-- ✅ marked.js — two CDN fallbacks -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
+  <script>
+    // If first CDN fails, load backup
+    if (typeof marked === 'undefined') {
+      var s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js';
+      document.head.appendChild(s);
+    }
+  </script>
+
+  <!-- Supabase (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Main notes script -->
+  <script src="js/notes.js"></script>
+
+  <!-- Prev/Next unit navigation -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const p       = new URLSearchParams(location.search);
+      const sem     = p.get('sem')     || '1';
+      const subject = p.get('subject') || 'physics';
+      const note    = p.get('note')    || 'unit1';
+      const unitNum = parseInt(note.replace('unit', '')) || 1;
+      const nav     = document.getElementById('unit-nav');
+      if (!nav) return;
+
+      if (unitNum > 1) {
+        const a = document.createElement('a');
+        a.href      = `notes.html?sem=${sem}&subject=${subject}&note=unit${unitNum - 1}`;
+        a.className = 'btn btn-ghost';
+        a.innerHTML = `← Unit ${unitNum - 1}`;
+        nav.appendChild(a);
+      }
+      if (unitNum < 5) {
+        const a = document.createElement('a');
+        a.href      = `notes.html?sem=${sem}&subject=${subject}&note=unit${unitNum + 1}`;
+        a.className = 'btn btn-primary';
+        a.innerHTML = `Unit ${unitNum + 1} →`;
+        nav.appendChild(a);
+      }
+    });
+  </script>
+
+</body>
+</html>
