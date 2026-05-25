@@ -3,8 +3,8 @@
    ============================================= */
 
 // ── Config ────────────────────────────────────
-const SUPABASE_URL    = 'YOUR_SUPABASE_URL';
-const SUPABASE_KEY    = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL    = 'https://yiucvqmtumyslcblowop.supabase.co';
+const SUPABASE_KEY    = 'sb_publishable_Oc2bWjEsfLDWCLU7dVuFAQ_Ofj5nrNq';
 const ADMIN_PASSWORD  = 'admin@bsc2024';
 
 let _sb      = null;
